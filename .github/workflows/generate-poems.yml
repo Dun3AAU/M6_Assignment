@@ -1,0 +1,49 @@
+name: Generate Poems and Update Pages
+
+on:
+  workflow_run:
+    workflows: ["Fetch Weather Data"]
+    types:
+      - completed
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v2
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Generate poems and update GitHub Pages
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: uv run generate_poems.py
+
+      - name: Commit and push updates
+        run: |
+          git config user.name "Poems Bot"
+          git config user.email "poems@example.com"
+          git add docs/ outputs/
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update poems and weather page" && git push)
+
+      - name: Deploy to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
