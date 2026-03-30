@@ -4,17 +4,221 @@ import json
 import os
 import re
 import html
+import shutil
+import tempfile
 from pathlib import Path
 from typing import Any
 from dotenv import load_dotenv
 from groq import Groq
+import wandb
+
+try:
+    import weave
+except Exception:  # pragma: no cover - weave is optional at runtime
+    weave = None
 
 from weather_queries import get_tomorrow_weather
+from config import SQL_DB_PATH
 
 OUTPUT_FILE = Path("outputs") / "poems.md"
 HTML_OUTPUT_FILE = Path("docs") / "index.html"
-DEFAULT_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
 load_dotenv()
+DEFAULT_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+WANDB_PROJECT = os.getenv("WANDB_PROJECT", "m6-assignment")
+WANDB_ENTITY = os.getenv("WANDB_ENTITY")
+
+
+class TrackingSession:
+    def __init__(self, run: Any | None, artifact_dir: Path | None = None):
+        self.run = run
+        self.artifact_dir = artifact_dir
+
+    @property
+    def enabled(self) -> bool:
+        return self.run is not None and self.artifact_dir is not None
+
+    def write_json(self, name: str, payload: Any) -> Path:
+        if not self.enabled:
+            raise RuntimeError("TrackingSession is not enabled.")
+        path = self.artifact_dir / name
+        path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        return path
+
+    def finish(self) -> None:
+        if self.run is not None:
+            self.run.finish()
+        if self.artifact_dir is not None:
+            shutil.rmtree(self.artifact_dir, ignore_errors=True)
+
+
+def _init_tracking_session(period: str | None) -> TrackingSession:
+    mode = os.getenv("WANDB_MODE")
+    api_key = os.getenv("WANDB_API_KEY")
+
+    if mode not in ("offline", "disabled") and not api_key:
+        return TrackingSession(run=None, artifact_dir=None)
+
+    try:
+        run = wandb.init(
+            project=WANDB_PROJECT,
+            entity=WANDB_ENTITY,
+            job_type="groq-poem-generation",
+            tags=["groq", "weather", "poems"],
+            config={
+                "groq_model": DEFAULT_MODEL,
+                "weather_period": period or "auto",
+            },
+            mode=mode,
+        )
+    except Exception:
+        return TrackingSession(run=None, artifact_dir=None)
+
+    if weave is not None and os.getenv("WEAVE_DISABLED", "0") != "1":
+        weave_project = WANDB_PROJECT if not WANDB_ENTITY else f"{WANDB_ENTITY}/{WANDB_PROJECT}"
+        try:
+            weave.init(weave_project)
+        except Exception:
+            pass
+
+    artifact_dir = Path(tempfile.mkdtemp(prefix="wandb-artifacts-"))
+    return TrackingSession(run=run, artifact_dir=artifact_dir)
+
+
+def _to_serializable(response: Any) -> dict[str, Any]:
+    if hasattr(response, "model_dump"):
+        return response.model_dump()
+    if isinstance(response, dict):
+        return response
+    return {"raw": str(response)}
+
+
+def _log_input_artifact(
+    tracking: TrackingSession,
+    period: str | None,
+    window_start: str,
+    window_end: str,
+    rows: list[dict[str, Any]],
+    summary: list[dict[str, Any]],
+    system_prompt: str,
+    user_prompt: str,
+) -> None:
+    if not tracking.enabled:
+        return
+
+    payload = {
+        "period": period,
+        "window_start": window_start,
+        "window_end": window_end,
+        "rows": rows,
+        "summary": summary,
+        "system_prompt": system_prompt,
+        "user_prompt": user_prompt,
+    }
+    input_path = tracking.write_json("input_context.json", payload)
+
+    artifact = wandb.Artifact(name="groq-weather-inputs", type="dataset")
+    artifact.add_file(str(input_path), name="input_context.json")
+
+    db_path = Path(SQL_DB_PATH)
+    if db_path.exists():
+        artifact.add_file(str(db_path), name="weather.db")
+
+    tracking.run.log_artifact(artifact)
+
+
+def _log_groq_artifact(
+    tracking: TrackingSession,
+    response: Any,
+    parsed_payload: dict[str, Any],
+    raw_content: str,
+) -> None:
+    if not tracking.enabled:
+        return
+
+    response_data = _to_serializable(response)
+    response_path = tracking.write_json("groq_response.json", response_data)
+    parsed_path = tracking.write_json("parsed_payload.json", parsed_payload)
+    raw_path = tracking.artifact_dir / "raw_content.txt"
+    raw_path.write_text(raw_content, encoding="utf-8")
+
+    artifact = wandb.Artifact(name="groq-generation-response", type="model-output")
+    artifact.add_file(str(response_path), name="groq_response.json")
+    artifact.add_file(str(parsed_path), name="parsed_payload.json")
+    artifact.add_file(str(raw_path), name="raw_content.txt")
+    tracking.run.log_artifact(artifact)
+
+    usage = response_data.get("usage") if isinstance(response_data, dict) else None
+    if isinstance(usage, dict):
+        prompt_tokens = usage.get("prompt_tokens")
+        completion_tokens = usage.get("completion_tokens")
+        total_tokens = usage.get("total_tokens")
+        metrics: dict[str, float | int] = {}
+        if isinstance(prompt_tokens, (int, float)):
+            metrics["prompt_tokens"] = prompt_tokens
+        if isinstance(completion_tokens, (int, float)):
+            metrics["completion_tokens"] = completion_tokens
+        if isinstance(total_tokens, (int, float)):
+            metrics["total_tokens"] = total_tokens
+        if metrics:
+            tracking.run.log(metrics)
+
+
+def _log_output_artifact(
+    tracking: TrackingSession,
+    result: dict[str, Any],
+    markdown_path: Path,
+    html_path: Path,
+) -> None:
+    if not tracking.enabled:
+        return
+
+    result_path = tracking.write_json("result.json", result)
+
+    artifact = wandb.Artifact(name="groq-weather-poems", type="result")
+    artifact.add_file(str(result_path), name="result.json")
+    artifact.add_file(str(markdown_path), name=markdown_path.name)
+    artifact.add_file(str(html_path), name=html_path.name)
+    tracking.run.log_artifact(artifact)
+
+    tracking.run.log(
+        {
+            "rows_in_window": len(result.get("rows", [])),
+            "locations_in_summary": len(result.get("summary", [])),
+        }
+    )
+
+
+if weave is not None:
+    @weave.op()
+    def _call_groq_completion(
+        api_key: str,
+        model: str,
+        temperature: float,
+        messages: list[dict[str, str]],
+    ) -> dict[str, Any]:
+        client = Groq(api_key=api_key)
+        response = client.chat.completions.create(
+            model=model,
+            temperature=temperature,
+            response_format={"type": "json_object"},
+            messages=messages,
+        )
+        return _to_serializable(response)
+else:
+    def _call_groq_completion(
+        api_key: str,
+        model: str,
+        temperature: float,
+        messages: list[dict[str, str]],
+    ) -> dict[str, Any]:
+        client = Groq(api_key=api_key)
+        response = client.chat.completions.create(
+            model=model,
+            temperature=temperature,
+            response_format={"type": "json_object"},
+            messages=messages,
+        )
+        return _to_serializable(response)
 
 
 def _build_weather_context(summary: list[dict[str, Any]]) -> str:
@@ -44,7 +248,7 @@ def _extract_json_payload(content: str) -> dict[str, Any]:
 
 
 
-def generate_bilingual_poems(period: str | None = None) -> dict[str, Any]:
+def generate_bilingual_poems(period: str | None = None, tracking: TrackingSession | None = None) -> dict[str, Any]:
     """
     Generate Danish and English poems for the selected tomorrow period.
 
@@ -61,7 +265,7 @@ def generate_bilingual_poems(period: str | None = None) -> dict[str, Any]:
             "Run fetch.py first or choose another period."
         )
 
-    client = Groq(api_key=os.environ["GROQ_API_KEY"])
+    api_key = os.environ["GROQ_API_KEY"]
 
     system_prompt = (
         "You are a poetic weather assistant. "
@@ -78,22 +282,48 @@ def generate_bilingual_poems(period: str | None = None) -> dict[str, Any]:
         "Output STRICTLY as JSON with keys: danish_poem, english_poem, surf_recommendation."
     )
 
-    response = client.chat.completions.create(
+    if tracking is not None:
+        _log_input_artifact(
+            tracking=tracking,
+            period=period,
+            window_start=window.start.isoformat(),
+            window_end=window.end.isoformat(),
+            rows=rows,
+            summary=summary,
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+        )
+
+    response_data = _call_groq_completion(
+        api_key=api_key,
         model=DEFAULT_MODEL,
         temperature=0.8,
-        response_format={"type": "json_object"},
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
         ],
     )
 
-    content = response.choices[0].message.content or ""
+    choices = response_data.get("choices", []) if isinstance(response_data, dict) else []
+    if not choices:
+        raise ValueError("Groq returned no choices.")
+
+    message = choices[0].get("message", {}) if isinstance(choices[0], dict) else {}
+    content = message.get("content") or ""
     payload = _extract_json_payload(content)
+
+    if tracking is not None:
+        _log_groq_artifact(
+            tracking=tracking,
+            response=response_data,
+            parsed_payload=payload,
+            raw_content=content,
+        )
 
     result = {
         "window_start": window.start.isoformat(),
         "window_end": window.end.isoformat(),
+        "rows": rows,
         "summary": summary,
         "danish_poem": payload.get("danish_poem", ""),
         "english_poem": payload.get("english_poem", ""),
@@ -224,11 +454,16 @@ def write_html_output(result: dict[str, Any], destination: Path = HTML_OUTPUT_FI
 
 def main() -> None:
     period = os.getenv("WEATHER_PERIOD")
-    result = generate_bilingual_poems(period=period)
-    markdown_path = write_markdown_output(result)
-    html_path = write_html_output(result)
-    print(f"Poems written to {markdown_path}")
-    print(f"HTML written to {html_path}")
+    tracking = _init_tracking_session(period=period)
+    try:
+        result = generate_bilingual_poems(period=period, tracking=tracking)
+        markdown_path = write_markdown_output(result)
+        html_path = write_html_output(result)
+        _log_output_artifact(tracking, result, markdown_path, html_path)
+        print(f"Poems written to {markdown_path}")
+        print(f"HTML written to {html_path}")
+    finally:
+        tracking.finish()
 
 
 if __name__ == "__main__":
