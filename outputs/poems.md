@@ -1,22 +1,30 @@
 # Weather Poems
 
-Time window: 2026-03-30T21:00:00+02:00 → 2026-03-30T22:00:00+02:00
+Time window: 2026-03-31T16:00:00+02:00 → 2026-03-31T17:00:00+02:00
 
 ## Weather Summary
 
 | Location | Avg Temp (°C) | Avg Precip (%) | Avg Wind (m/s) | Min Temp | Max Temp |
 |---|---:|---:|---:|---:|---:|
-| Aalborg Øst | 5.8 | 5.0 | 6.1 | 5.8 | 5.8 |
-| Hanstholm | 5.5 | 26.0 | 7.9 | 5.5 | 5.5 |
-| Skive | 5.9 | 22.0 | 5.9 | 5.9 | 5.9 |
+| Aalborg Øst | 10.8 | 0.0 | 4.8 | 10.8 | 10.8 |
+| Hanstholm | 8.0 | 0.0 | 6.7 | 8.0 | 8.0 |
+| Skive | 11.6 | 0.0 | 4.6 | 11.6 | 11.6 |
 
 ## Danish Poem
 
-I morgen blæser vinden stærkt ved Hanstholm, men regn truer. Aalborg Øst og Skive byder på mere sol, men vinden er ikke stærk nok. Hanstholm er desto bedre til kitesurf, trods regnen.
+Vind og vejr, en dans med driv
+Hanstholm har vind, men kold er vinden blæst
+Aalborg Øst og Skive, sol og varme findes
+Men for kitesurf, hvor er det bedst at gå?
+Hanstholm har vind, så der er det bedst
 
 ## English Poem
 
-Tomorrow, winds at Hanstholm will be strong, despite the rain. Aalborg Øst and Skive offer more sun, but weaker winds prevail. Hanstholm's the better choice for kitesurf, rain or shine, it will set your spirit sail.
+Winds of change, a dance so fine
+Hanstholm has gusts, but cold they do shine
+Aalborg Øst and Skive, warmth on their shore
+For kitesurfing, where to go tomorrow?
+Hanstholm's winds make it the perfect place
 
 ## Surf Recommendation
 
