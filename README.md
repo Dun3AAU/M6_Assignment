@@ -80,6 +80,11 @@ uv sync
 | `GROQ_API_KEY` | Groq API key used by `generate_poems.py` |
 | `GROQ_MODEL` | Groq model name (default: `llama-3.3-70b-versatile`) |
 | `SQL_DB_PATH` | Path to the SQLite database (default: `data/weather.db`) |
+| `WANDB_API_KEY` | Weights & Biases API key (required for online logging) |
+| `WANDB_PROJECT` | W&B project name (default: `m6-assignment`) |
+| `WANDB_ENTITY` | W&B entity/team name (optional) |
+| `WANDB_MODE` | W&B mode (`online`, `offline`, `disabled`) |
+| `WEAVE_DISABLED` | Set to `1` to disable Weave tracing |
 
 Create a `.env` file or export the variables in your shell before running the scripts locally.
 
@@ -104,6 +109,12 @@ uv run generate_poems.py
 This reads tomorrow's weather from the database and writes:
 - `outputs/poems.md` – Markdown with weather summary and poems
 - `docs/index.html` – GitHub Pages HTML page
+
+If W&B is configured, this command also logs artifacts for:
+- weather input context (`rows`, `summary`, selected time window, prompts)
+- optional SQLite snapshot (`weather.db`)
+- raw Groq response + parsed JSON payload
+- final generated outputs (`result.json`, `poems.md`, `index.html`)
 
 You can target a specific time window by setting the `WEATHER_PERIOD` environment variable:
 

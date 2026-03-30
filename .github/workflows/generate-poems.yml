@@ -34,6 +34,9 @@ jobs:
       - name: Generate poems and update GitHub Pages
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
+          WANDB_PROJECT: ${{ vars.WANDB_PROJECT || 'm6-assignment' }}
+          WANDB_ENTITY: ${{ vars.WANDB_ENTITY }}
         run: uv run generate_poems.py
 
       - name: Commit and push updates
