@@ -1,33 +1,33 @@
 # Weather Poems
 
-Time window: 2026-04-03T21:00:00+02:00 → 2026-04-03T22:00:00+02:00
+Time window: 2026-04-04T21:00:00+02:00 → 2026-04-04T22:00:00+02:00
 
 ## Weather Summary
 
 | Location | Avg Temp (°C) | Avg Precip (%) | Avg Wind (m/s) | Min Temp | Max Temp |
 |---|---:|---:|---:|---:|---:|
-| Aalborg Øst | 4.4 | 100.0 | 7.7 | 4.4 | 4.4 |
-| Hanstholm | 5.6 | 89.0 | 7.8 | 5.6 | 5.6 |
-| Skive | 5.8 | 91.0 | 8.4 | 5.8 | 5.8 |
+| Aalborg Øst | 5.0 | 0.0 | 2.6 | 5.0 | 5.0 |
+| Hanstholm | 5.3 | 0.0 | 3.1 | 5.3 | 5.3 |
+| Skive | 6.1 | 0.0 | 2.8 | 6.1 | 6.1 |
 
 ## Danish Poem
 
-I morgen blæser det kraftigt ved kysten, 
-   men regnen kan ødelægge glæden. 
-   I Aalborg Øst er det for vådt, 
-   i Hanstholm og Skive er vinden ret. 
-   Men hvis jeg skal vælge, så er Skive bedst, 
-   med en temmelig klar himmel, og en vind der passer til kitesurf.
+I morgen blæser det let, 
+ved Hanstholm er vinden ret, 
+2.6 meter i sekundet er for lavt, 
+i Aalborg Øst er det ikke godt, 
+men i Skive er det lidt bedre, 
+Hanstholm er bedst til kitesurf.
 
 ## English Poem
 
-Tomorrow's winds are strong by the shore, 
-   but rain might ruin the fun once more. 
-   Aalborg Øst is too wet to play, 
-   Hanstholm and Skive have a better day. 
-   But if I had to choose, Skive's the place, 
-   with clearer skies and winds that show a friendly face.
+Tomorrow the winds will gently blow,
+Hanstholm's winds are just right to know,
+2.6 meters per second is too low,
+in Aalborg Øst it's not the place to go,
+Skive is better, but not the best,
+Hanstholm is where kitesurfers find their rest.
 
 ## Surf Recommendation
 
-Skive
+Hanstholm
