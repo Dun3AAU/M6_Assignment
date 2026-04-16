@@ -1,22 +1,28 @@
 # Weather Poems
 
-Time window: 2026-04-16T22:00:00+02:00 → 2026-04-16T23:00:00+02:00
+Time window: 2026-04-17T22:00:00+02:00 → 2026-04-17T23:00:00+02:00
 
 ## Weather Summary
 
 | Location | Avg Temp (°C) | Avg Precip (%) | Avg Wind (m/s) | Min Temp | Max Temp |
 |---|---:|---:|---:|---:|---:|
-| Aalborg Øst | 6.7 | 11.0 | 1.8 | 6.7 | 6.7 |
-| Hanstholm | 7.3 | 0.0 | 0.4 | 7.3 | 7.3 |
-| Skive | 9.2 | 0.0 | 1.4 | 9.2 | 9.2 |
+| Aalborg Øst | 8.8 | 0.0 | 2.2 | 8.8 | 8.8 |
+| Hanstholm | 9.3 | 4.0 | 2.0 | 9.3 | 9.3 |
+| Skive | 12.2 | 0.0 | 1.9 | 12.2 | 12.2 |
 
 ## Danish Poem
 
-I morgen blæser det stille i Hanstholm, men i Skive er solen varm og vindstille også. Aalborg Øst har en lille chance for regn, så lad os nøjes med at sige, at Skive er det bedste valg til kitesurf.
+I morgen blæser det let, men varmt i Skive
+Med 12 grader i luften, er det perfekt at nyde
+Det er her, du skal køre kitesurf, ikke i Aalborg Øst
+Eller Hanstholm, hvor regnen måske kommer
 
 ## English Poem
 
-Tomorrow, winds are low in Hanstholm, and in Skive, the sun shines warm and calm too. Aalborg Øst has a slight chance of rain, so let's agree Skive is the best for kitesurf, with temperatures so fair and bright.
+Tomorrow's breeze is gentle, warmth in Skive abounds
+Twelve degrees, a perfect day to hit the grounds
+Leave Aalborg Øst and Hanstholm behind, with their chill
+Skive's the spot, where kitesurfing dreams fulfill
 
 ## Surf Recommendation
 
