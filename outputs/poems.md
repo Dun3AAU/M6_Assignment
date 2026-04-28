@@ -1,22 +1,28 @@
 # Weather Poems
 
-Time window: 2026-04-28T22:00:00+02:00 → 2026-04-28T23:00:00+02:00
+Time window: 2026-04-29T22:00:00+02:00 → 2026-04-29T23:00:00+02:00
 
 ## Weather Summary
 
 | Location | Avg Temp (°C) | Avg Precip (%) | Avg Wind (m/s) | Min Temp | Max Temp |
 |---|---:|---:|---:|---:|---:|
-| Aalborg Øst | 8.0 | 0.0 | 2.4 | 8.0 | 8.0 |
-| Hanstholm | 6.7 | 0.0 | 3.1 | 6.7 | 6.7 |
-| Skive | 8.3 | 0.0 | 1.7 | 8.3 | 8.3 |
+| Aalborg Øst | 10.5 | 0.0 | 1.9 | 10.5 | 10.5 |
+| Hanstholm | 7.5 | 0.0 | 3.8 | 7.5 | 7.5 |
+| Skive | 9.1 | 0.0 | 2.5 | 9.1 | 9.1 |
 
 ## Danish Poem
 
-I morgen, hvor vinden møder himlen blå, er Hanstholm det bedste sted at surfe og le. Med en vindhastighed på 3,1 m/s er det perfekt for kitesurf. Aalborg Øst og Skive har lavere vind, så gå til Hanstholm i morgen.
+I morgen blæser det stærkest i Hanstholm, 
+med 3.8 m/s er det perfekt til kitesurf. 
+Aalborg Øst og Skive har lavere vind, 
+så Lad os gå til Hanstholm, det er bedst.
 
 ## English Poem
 
-Tomorrow, where the wind meets the blue sky, Hanstholm is the best place to surf and play. With a wind speed of 3.1 m/s, it's perfect for kitesurfing. Aalborg Øst and Skive have lower winds, so head to Hanstholm tomorrow.
+Tomorrow, winds will blow strongest in Hanstholm's shore, 
+3.8 m/s, perfect for kitesurfing once more. 
+Aalborg Øst and Skive have lesser might, 
+so let's head to Hanstholm, for the best kite flight.
 
 ## Surf Recommendation
 
