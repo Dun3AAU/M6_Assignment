@@ -1,23 +1,23 @@
 # Weather Poems
 
-Time window: 2026-05-10T21:00:00+02:00 → 2026-05-10T22:00:00+02:00
+Time window: 2026-05-11T22:00:00+02:00 → 2026-05-11T23:00:00+02:00
 
 ## Weather Summary
 
 | Location | Avg Temp (°C) | Avg Precip (%) | Avg Wind (m/s) | Min Temp | Max Temp |
 |---|---:|---:|---:|---:|---:|
-| Aalborg Øst | 9.1 | 0.0 | 5.4 | 9.1 | 9.1 |
-| Hanstholm | 7.7 | 0.0 | 7.5 | 7.7 | 7.7 |
-| Skive | 8.8 | 0.0 | 4.3 | 8.8 | 8.8 |
+| Aalborg Øst | 8.6 | 9.0 | 2.9 | 8.6 | 8.6 |
+| Hanstholm | 7.8 | 8.0 | 2.5 | 7.8 | 7.8 |
+| Skive | 8.4 | 12.0 | 3.2 | 8.4 | 8.4 |
 
 ## Danish Poem
 
-I morgen blæser det stærkest i Hanstholm, med en hastighed på 7,5 meter i sekundet. Men temperaturen er lav, kun 7,7 grader. I Aalborg Øst er det varmere, men vinden er svagere. Jeg anbefaler Hanstholm til kitesurf, selvom det er koldt.
+I morgen blæser vinden stærkest i Skive,\nmed 3,2 m/s er det perfekt til at surfe og leve.\nAalborg Øst og Hanstholm har lavere vind,\nmen Skive er det bedste valg, hvis du vil kitesurfe og vinde.
 
 ## English Poem
 
-Tomorrow, Hanstholm blows the strongest, with a speed of 7.5 meters per second. Though the temperature is low, at 7.7 degrees. Aalborg Øst is warmer, but the wind is weaker. I recommend Hanstholm for kitesurfing, despite the chill.
+Tomorrow, winds will blow strongest in Skive,\nwith 3.2 m/s it's perfect for surfing and thriving.\nAalborg Øst and Hanstholm have lower winds,\nbut Skive is the best choice, if you want to kitesurf and win.
 
 ## Surf Recommendation
 
-Hanstholm
+Skive
