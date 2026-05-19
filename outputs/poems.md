@@ -1,32 +1,32 @@
 # Weather Poems
 
-Time window: 2026-05-19T22:00:00+02:00 → 2026-05-19T23:00:00+02:00
+Time window: 2026-05-20T22:00:00+02:00 → 2026-05-20T23:00:00+02:00
 
 ## Weather Summary
 
 | Location | Avg Temp (°C) | Avg Precip (%) | Avg Wind (m/s) | Min Temp | Max Temp |
 |---|---:|---:|---:|---:|---:|
-| Aalborg Øst | 12.9 | 17.0 | 2.9 | 12.9 | 12.9 |
-| Hanstholm | 11.0 | 10.0 | 3.0 | 11.0 | 11.0 |
-| Skive | 12.8 | 19.0 | 1.9 | 12.8 | 12.8 |
+| Aalborg Øst | 13.1 | 60.0 | 1.7 | 13.1 | 13.1 |
+| Hanstholm | 11.1 | 15.0 | 3.5 | 11.1 | 11.1 |
+| Skive | 11.9 | 23.0 | 3.5 | 11.9 | 11.9 |
 
 ## Danish Poem
 
-Vind og vejr på dansk jord, 
-Hanstholm har den bedste kyst, 
-sol og bølger, perfekt for sejl, 
-Aalborg og Skive har mere regn, 
-Hanstholm er stedet, hvor du skal være, 
-til kitesurf i morgen, uden tvivl.
+Vind og vejr, en danser til sjov
+I Aalborg Øst, regn kommer til trods
+Hanstholm og Skive, bedre muligheder
+For kitesurf, med vind i håret, lad være
+Hanstholm er bedst, med vind og solskin
+Gå der og nyd, en dejlig kitesurftur
 
 ## English Poem
 
-Winds of change across the shore, 
-Hanstholm stands out, and more, 
-sun and waves, a perfect sail, 
-Aalborg and Skive face more rain, 
-Hanstholm is the place to be, 
-tomorrow's kitesurf, a joy to see
+Winds do whisper, a surfer's delight
+Aalborg Øst, rain falls without light
+Hanstholm and Skive, better chances await
+For kitesurfing, with winds in your hair, don't hesitate
+Hanstholm is best, with winds and sunshine bright
+Go there and enjoy, a wonderful kitesurfing night
 
 ## Surf Recommendation
 
